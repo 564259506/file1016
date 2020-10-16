@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    config:
+      # 配置文件名称
+      name: microservicecloud-config-client
+      # 分值名称
+      label: master
+      # 读取的后缀名
+      profile: test
+      # 配置中心地址
+      uri: http://localhost:3344
+  application:
+    name: config-client
+#rabbitmq相关配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: 3366
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

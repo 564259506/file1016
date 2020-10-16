@@ -1,0 +1,32 @@
+# 20200815
+server:
+  port: 3344
+spring:
+  #rabbitmq相关配置 ↓↓↓↓↓↓↓
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  #rabbitmq相关配置 ↑↑↑↑↑↑↑
+  application:
+    name: config-3344
+  cloud:
+    config:
+      server:
+        git:
+          #          uri: git@github.com:YeahSir/microservicecloud-config.git
+#               https://github.com/YeahSir/microservicecloud-config
+          uri: https://github.com/564259506/microservicecloud-config
+#指定注册中心的地址
+eureka:
+  client:
+    service-url:
+      #      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+      defaultZone: http://eureka7001.com:7001/eureka/
+#配置Rabbitmq相关配置，暴露bus刷新配置的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"
