@@ -1,0 +1,21 @@
+# 2020- 08 - 19
+spring:
+  application:
+    #    起名字
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        #        定位注册地址（nacos的地址8848）
+        server-addr: localhost:8848 #配置Nacos地址
+# 端口号设置
+server:
+  port: 9002
+# 监控设置，这里*是监控所有
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+

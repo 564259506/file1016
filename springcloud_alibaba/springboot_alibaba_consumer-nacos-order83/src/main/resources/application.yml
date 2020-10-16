@@ -1,0 +1,16 @@
+# 2020-08-19
+spring:
+  application:
+    name: nacos-order-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+#消费者将要去访问的微服务名称(注册成功进nacos的微服务提供者)
+service-url:
+#  提供者配置定位注册地址（nacos的8848），消费者配置定位提供者的地址（http://+提供者配置文件name）
+  nacos-user-service: http://nacos-payment-provider
+server:
+  port: 83
+
+
