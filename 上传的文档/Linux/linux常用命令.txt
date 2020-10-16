@@ -1,0 +1,17 @@
+ps -ef | grep java
+
+表示查看所有进程里CMD是java的进程信息
+ps -aux | grep java
+
+-aux显示所有状态
+
+通常用ps查看进程PID，用kill命令终止进程，如：
+
+例如：kill -9 [PID]
+
+-9表示强迫进程立即停止
+
+
+service mysql start
+service mysql stop
+service mysql restart

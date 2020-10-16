@@ -1,0 +1,38 @@
+1. 关虚拟机防火墙两条命令
+chkconfig   iptables   off    
+service   iptables   stop 
+
+2.  8066: mycat 默认端口号
+dump: 停删摧毁
+
+3. 如果关了防火墙还不行看配置文件
+vim /etc/hosts      进入设置
+在后面加上自己centos名字，  eg  x9507
+
+4. 用mycat集群数据库的两种方式（存储规则）：
+  （1）auto-sharding-long  ：  按设置的值依次存入，存满第一个库存第二个库，存满第二个库存第三个库， eg: 库一 ：0-500万，  库二：500万01 --1000万  。。。。
+
+  （2） mod -long ：每个库轮流存数据， 对Id取模，模为0存库1，模为1存库2，模为2存库3
+
+5.  修改  schema\ server \ rule   三个文件
+<schema ...：逻辑库
+          name: 给逻辑库设置一个名称
+
+<table ... ：逻辑表
+          name：给逻辑表设置一个名称（最好和真正的数据库中表的名称保持一致）
+          dataNode =“dn1，dn2，dn3...”  ：那几个数据节点，(与下面一一对应)
+          rule：存储规则（集群方式）： auto-sharding-long  /  mod -long
+
+<dataNode ... :数据节点
+          name = “dn1”   设置哪一个数据库（供上面引用，一一对应）
+          dataHost="locahost1"     引用数据主机（下面<dataHost。。里面设置的name）
+          database="db1"    设置dn1数据库（同上面name设置）中的哪一个库
+
+<dataHost...   : 数据主机
+            name = "xx locahost1 xx"   :设置数据主机名称，供上面数据节点引用
+            max/minCon  : 设置最大最小连接数
+            heartbeat:  心跳   （里面设置各自心跳，用户心跳、xx心跳）
+            select  user() :   查找用户心跳（检查心跳）。在<heartbeat 。。设置的心跳之一
+
+<writeHost  ... ：  配置自己MySQL数据库的真正连接信息 （区分与mycat配置信息）
+         host = “xx”起个主机名    url = " xx.xx.xx.xx: 3306"  

@@ -1,0 +1,128 @@
+ Docker 命令总结：
+    1.启动Docker 命令
+       service  docker  start
+    2. 重启Docker命令
+       service docker restart 
+一。镜像命令
+
+1. 搜索镜像
+   docker  search  镜像名（tomcat。。）
+
+2.下载镜像（拉镜像）
+   ①docker  pull  镜像名
+   ② run    ：下载并运行
+
+commit???????
+3.通过镜像创建容器
+   （1）用run  创建并启动容器 且会进入
+   docker   run  -it  【--name  "自定义名称"】
+   docker   run  -d  --name  "自定义名称"
+
+4. 查看镜像命令
+    docker images  【所有docker images -a，仅id: docker images -p】
+  
+5. 删除镜像
+   docker   rmi  镜像名/id   【删除单个】
+   docker   rmi -f  $(docker  image -a -q)     【删除多个】
+
+  二。容器命令
+
+1.通过镜像创建容器【同一、3】
+   （1）用run  创建并启动容器 且会进入
+   docker   run  -it  【--name  "自定义名称"】
+   docker   run  -d  --name  "自定义名称"
+
+2.查看容器命令
+    docker  ps  ：正在运行容器 
+    docker  ps -a :所有容器，含没运行
+
+3. 启动容器  &&  重启容器
+ （1）用run 【创建新的并启动】
+ （2）用start 【启动已有的容器】
+       docker  start  镜像名/镜像id
+ （3）重启容器
+       docker   restart   镜像名/镜像id
+
+4.进入到已经运行的容器
+      （1）exec【重新开启进程】
+          ①  docker exec -it 容器名称/id    /bin/sh    【直接进入到/bin/sh里面】
+          ②  docker exec -it 容器名称/id    ls  /root    【在不进入容器的情况下查看容器】
+        (2) attach【同一进程】
+            docker  attach   容器名称/ID    【看上去像卡了，回车回车回车】
+
+
+5. 退出容器  &&  关闭容器   && 删除容器
+   （1）当在容器里面时 
+            ①exit  ：如果是 exec -it  方法进去了就只是退出  但  容器还在运行 
+                           如果是  attach  就是退出 + 关闭容器
+             ②CTRL+P+Q  : 都是退出，但不关闭容器   
+  （2）在容器外面要关闭容器
+             ① docker   stop   容器名/容器ID  【停止】
+             ② docker   kill    容器名/容器ID   【强制停止】
+  （3）删除容器
+         docker  rm   容器名/容器ID  【删除单个】 【-f ：强制删除】
+         docker  rm   -f   $(docker  ps -a -q)   【删除多个】
+
+6. 查看最近玩的容器
+         docker  ps -n  x   【查看最近的第x条】
+
+7. 拷贝容器中的文件   到   主机（Linux操作系统）
+                                    （CTRL+C 路径）              （CTRL+V 路径）
+    docker  cp  容器ID:容器中你要拷贝的文件的路径   主机的路径
+
+三 、镜像commit
+
+   docker commit 提交容器副本使之成为一个新的镜像
+
+  docker commit -m="提交的描述信息" -a="作者" 容器ID 要创建的目标镜像名:[标签名]
+
+
+四、容器数据卷
+   
+数据集容器
+
+直接命令添加volume:
+docker  run  -it  -v    /宿主机目录:/容器内目录  镜像名
+查看数据卷是否挂载成功:
+dpcker  inspect
+
+dc02继承dc01：
+ docker run -it --name dc02 --volumes-from dc01  镜像名
+
+
+-p  777:888 （宿主机端口:容器端口）
+-v   宿主机地址/容器路径   （可以带多个-v）
+
+六、Dockerfile
+
+-f file  你的dockerfile文件的路径
+-t title 生成镜像的名称
+docker build -f /mydocker/Dockerfile -t linhw/centos .
+
+Dockerfile，说白就是images镜像模板的描述文件，类似于class是java文件的描述文件
+scratch 是系统老大
+
+*DockerFile体系结构（保留字指令）
+：
+1.FROM  ：镜像来源
+2.Copy: 宿主机复制到镜像
+3.ADD : 拷贝和解压
+4.Run :  运行命令
+5.工作文件夹（落脚点）
+。。。。
+
+五、其他
+  docker  info 
+  docker   inspect
+
+
+
+
+touch xx.txt ：创建文件
+vim/vi  xx.txt : 修改文件内容   【主机用vim, 容器用vi】
+cat  xx.txt  : 查看文件内容
+
+Dockerfile: 是脚本，用来构建镜像
+docker build -f -t
+
+2227    1802

@@ -1,0 +1,63 @@
+一、框架是 应用程序的半成品，提供了可以重用的公共结构
+strtus2(s~MVC)、 Hibernate
+持久化？  数据在瞬时状态向持久状态转换的过程。（将数据写入数据库）
+ORM ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+  对象关系映射 ：将对象（实体类）和数据库中表  映射起来，能让表和对象合二为一的工具
+     ORM思想  ：  编写程序的时候，以面向对象的方式处理数据（要操作表直接操作对象）
+                          保存数据的时候，却以关系型数据库的方式存储、
+             ？？？什么是关系型数据库： 采用了关系模型来组织数据的数据库，（以行和列的形式存储数据）
+    将对象（实体类）和数据库中表  映射起来，能让表和对象合二为一的工具
+常见的  ORM框架有hibernate【orm的全实现，连sql都不用写。笨重】    半动orm框架有mybatis,【半自动是指还是要写sql】
+mybatis是orm的半自动化实现，充当持久化框架。【通过对象和表的映射关系实现持久化】
+
+mybatis执行增删改时，需要基于事务执行（提交/回滚）
+查询持久化时；parameterType【自动对应】和resultMap【手动对应】 不能同时存在
+二、mapper映射文件：
+namespace：  将mapper.xml文件和dao层接口关联起来
+resultMap :   自定义返回结果类型 【用于返回复杂结构一对多的关系】 【指定哪个属性和哪个列对象①+②】
+<resultMap  id="xx"  type="返回类型">
+①column ： 数据库中表的列名  
+②property ：实体类中属性名 
+③jdbcType:   数据类型（数据库）
+④id  column="xxx"  : id指之间列
+⑤result  column="xx1"  非主键列
+⑥1对1： association ?
+⑦1对多：collection ?
+⑧parameterType：指定参数类型（填实体类路径）
+⑨自动增涨列（eg：id）添加数据时没填，要拿到这个数据（eg:id）
+方法一：<selectKey></selectKey> : 插入数据之后将生成的ID返回给（parameterType）
+方法二：useGeneratedKeys ：T/F   是否拿生成的这个key
+             keyProperty=“xx"    拿了后返回给xx
+⑩#{userId} ： 从哪里获取的： 对应的实体类中的属性
+<id  column="id"   property = "id"  jdbcType = "bigint">
+<result  column="xx1"   property = "xx1"  jdbcType = "bigint">   
+<result  column="xx2"   property = "xx1"  jdbcType = "bigint">  
+<result  column="id"     property = "id"    jdbcType = "bigint">  
+<result  column="id"     property = "id"    jdbcType = "bigint"> 
+
+ <insert id="create" parameterType="cn.wxc.entity.Order" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order(user_id,product_id,count,money,status) values (#{userId},#{productId},#{count},#{money},0);
+    </insert>
+
+三、类和类之间的关系
+mybatis :半实现orm思想 框架，orm想把一个表和一个类（对象）对应
+  表于表之间有什么关系：通过主外键（公共字段）形成的表和表的关系：
+                             ①一对一 ②一对多 ③多对一 ④多对多
+  那么实现映射的类和类之间的关系： 
+    人类和车类，通过类的属性实现类和类的关系
+                          ①一对一（一人一个车），人类里面new一个车类
+                          ②一对多（一人可以有多个车）   用list<车>装这个人名下所有的车
+                          ③多对一（一个车可以带多个人）用list<人>装这个车载了多少人
+                          ④多对多（上下班，无数人做地铁转公交再转自行车）
+上面二、1对多：collection ?   resultMap 里面的属性【查询年级，编号1，对应一年级，下面的学生有： （001，wxc,wh,23...）,（001，cq,wh,23...）,（001，wc,wh,23...）...】
+resultMap里面一对一的还是照旧(编号对应年级部分)，一对多的给（年级对应学生部分）⬇
+①collection:   多   【多的就是个集合】
+②property ： 指定集合的属性
+③javaType ： 指定集合的类型，是什么样的集合，list, 
+④ofType="students" ：指定是什么样的泛型，这里是list<students>
+⑤ notNullColumn =“id”  不为空的列,这里是指定Id不为空，如果为空，则不返回对象【没有id的不返回 ，不为空时返回对象】
+⑥aotumapping ="T/F"  是否需要自动映射,【属性和列的自动映射（!字段名要和属性相同）】 。    如是，则不再需要写<id ..<result ..<result..
+<collection  property = "students"    javaType="list"  ofType="students"
+
+
+@MapperScan({"cn.wxc.dao"}) ： 扫描dao层接口
