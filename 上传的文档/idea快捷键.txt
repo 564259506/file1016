@@ -1,0 +1,28 @@
+1.   <resources加载java文件夹下mapper的映射文件（xxx.xml）
+加载java文件夹下mapper的映射文件（xxx.xml）
+<!--加载java文件夹下mapper的映射文件（xxx.xml）-->
+                  <resources>
+                      <resource>
+                          <directory>src/main/java</directory>
+                          <includes>
+                              <include>**/*.xml</include>
+                          </includes>
+                      </resource>
+                      <resource>
+                          <directory>src/main/resources</directory>
+                          <includes>
+                              <include>**/*.*</include>
+                          </includes>
+                      </resource>
+                      <resource>
+                          <directory>src/main/webapp</directory>
+                          <targetPath>META-INF/resources</targetPath>
+                          <includes>
+                              <include>**/*.*</include>
+                          </includes>
+                      </resource>
+                  </resources>
+
+2. <xmlns:th="">thymeleaf的配置     
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
