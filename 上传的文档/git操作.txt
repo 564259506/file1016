@@ -1,0 +1,43 @@
+idea   <====> github
+
+一、idea ---> github   (上传idea中项目到 github)
+1. 在github中创建好接受项目的仓库
+2. 在idea中选中要操作的项目（模块）
+            VCS  --> import  into Version Control  --> Create  Git Repository  -->选中要操作的内容
+3. 在要操作的内容上（项目/模块） --> 右键 --> git --> 
+       （1）add  添加（添加后类变色）
+       （2）commit File。。   提交
+       （3）Repository     
+               ①rebase  ： 设置github中创建的仓库地址（idea连接哪个仓库）
+               ②push:  上传
+
+二、github --->idea  (从github上克隆项目到idea)
+       VCS --> checkout  from  version control --> git -->（github -->本地）  ①url: GitHub地址   ②Directory : 本地项目存放地址  
+
+三、上传修改后的代码  idea --->github
+    修改代码  --->（1）add(（项目/模块） --> 右键 --> git -->add)
+                    --->（2）commit File。。   提交
+                    --->（3）Repository     
+                           //①rebase  ： 设置github中创建的仓库地址（idea连接哪个仓库）
+                              ②push:  上传
+
+四、拉取别人修改后的代码   github --->idea
+           Repository ---> pull
+      （代码更新，自己操作之前尽量都pull一下）
+
+五、 代码冲突问题（多名成员同时修改一文件）
+   Accept Yours： 以你的代码为主
+   Accept Theirs:  以其他人的代码为主
+
+！！！避免冲突
+    修改文件之前，先进行一次update操作   （pull一下，上四）
+    修改完成后，及时commit,不要在本地停留过长时间
+
+
+六、上传项目/文件到github(华为应该是禁止)
+git  init 
+git  add .
+git commit -m "xxx这里是注释xxxx"
+git remote add origin https://自己的仓库url地址
+git push -u origin master
+
